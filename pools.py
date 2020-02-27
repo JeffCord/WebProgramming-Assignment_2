@@ -4,12 +4,9 @@ import xml.etree.ElementTree as ET
 import json
 
 app = Flask(__name__)
-etags = []  # TODO change to list
+etags = []
 
-# TODO This should generate JSON output showing all the pool names as below:
-#  {
-#    pools: [{pool_name: <pool_name>}, {pool_name: <pool_name>}, .....
-#  }
+# generates JSON output showing all the pool names as below:
 @app.route('/pools')
 def find_all_pools():
     pools_dict = {'pools': []}
@@ -39,11 +36,7 @@ def find_all_pools():
     return pools_dict
 
 
-# If <pool_name> does not exists:
-# HTTP response status: 404 NOT Found
-# If <pool_name> exists:HTTP response status: 200 OK
-# HTTP response body:
-
+# returns json data for a requested pool
 # {
 #   pool_name: <pool_name>,
 #   status: <status>,
@@ -56,9 +49,6 @@ def find_pool(pool_name):
     etag_header = flask_request.headers.get('If-None-Match')
 
     if etag_header is not None and etag_header in etags:
-        # for i in etags[pool_name]:
-        #     print(etags[pool_name][i])
-
         return pool_name, 304
 
     url_xml_data = 'https://raw.githubusercontent.com/devdattakulkarni/elements-of-web-programming' \
@@ -86,7 +76,7 @@ def find_pool(pool_name):
 
     # a non-existent pool name should return a 404 error
     if not pool_found:
-        # TODO return proper error message
+        # return the proper 404 error message
         error_dict = {'error': pool_name + ' not found'}
         return error_dict, 404
 
