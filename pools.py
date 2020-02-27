@@ -57,7 +57,7 @@ def find_pool(pool_name):
         # for i in etags[pool_name]:
         #     print(etags[pool_name][i])
 
-        return pool_name, 304, {'ETag': pool_name}
+        return pool_name, 304
 
     url_xml_data = 'https://raw.githubusercontent.com/devdattakulkarni/elements-of-web-programming' \
                    '/master/data/austin-pool-timings.xml'
@@ -86,12 +86,12 @@ def find_pool(pool_name):
     # TODO ask about where this 404 message should be displayed:
     #   on command line (CHECK ASSIGNMENT PAGE FOR UPDATES)
     if not pool_found:
-        return 'Pool not found.', 404
+        return 'Pool not found.\n', 404
 
     # with open ('pool_found.json', 'w') as f:
     #     new_json = json.dump(pool_dict, f, indent=2)
 
-    # add etag if not in etags dictionary
+    # add etag if not in etags list
     etags.append(pool_name)
 
     # flask converts the dictionary into a human-readable string (json format)
