@@ -53,7 +53,9 @@ def find_all_pools():
 @app.route('/pools/<pool_name>', methods=['GET'])
 def find_pool(pool_name):
     # check for ETAG
-    if pool_name in etags:
+    etag_header = flask_request.headers.get('If-None-Match')
+
+    if etag_header is not None and etag_header in etags:
         # for i in etags[pool_name]:
         #     print(etags[pool_name][i])
 
@@ -83,10 +85,10 @@ def find_pool(pool_name):
                 break
 
     # a non-existent pool name should return a 404 error
-    # TODO ask about where this 404 message should be displayed:
-    #   on command line (CHECK ASSIGNMENT PAGE FOR UPDATES)
     if not pool_found:
-        return 'Pool not found.\n', 404
+        # TODO return proper error message
+        error_dict = {'error': pool_name + ' not found'}
+        return error_dict, 404
 
     # with open ('pool_found.json', 'w') as f:
     #     new_json = json.dump(pool_dict, f, indent=2)
