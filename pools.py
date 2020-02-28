@@ -51,7 +51,7 @@ def find_pool(pool_name):
 
     if etag_header is not None:
         etag_header = urllib.parse.unquote(etag_header)
-        print(etag_header)
+
         if etag_header in etags:
             return '', 304
 
